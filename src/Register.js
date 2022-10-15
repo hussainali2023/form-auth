@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   createUserWithEmailAndPassword,
   getAuth,
+  sendEmailVerification,
   updateProfile,
 } from "firebase/auth";
 import app from "./firebase.init";
@@ -12,6 +13,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isDisable, setIsDisable] = useState(true);
 
   const handleName = (e) => {
     setName(e.target.value);
@@ -53,6 +55,7 @@ const Register = () => {
           // Signed in
           const user = userCredential.user;
           updateName();
+          verify();
           console.log(user);
           setError("");
           // ...
@@ -81,6 +84,13 @@ const Register = () => {
         // An error occurred
         // ...
       });
+  };
+
+  const verify = () => {
+    sendEmailVerification(auth.currentUser).then(() => {
+      // Email verification sent!
+      // ...
+    });
   };
 
   return (
@@ -122,7 +132,7 @@ const Register = () => {
               required
             />
           </div>
-          <div className="mb-6">
+          <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
               htmlFor="password"
@@ -139,9 +149,23 @@ const Register = () => {
               required
             />
           </div>
+          <div className="mb-2 ">
+            <input
+              onClick={() => {
+                setIsDisable(!isDisable);
+              }}
+              type="checkbox"
+              name="condition"
+              id=""
+            />
+            <span className="ml-1 text-sm text-blue-600 font-medium cursor-pointer">
+              Accept term & condition
+            </span>
+          </div>
           <div className="">
             <button
               onClick={handleSignUp}
+              disabled={isDisable}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
             >
