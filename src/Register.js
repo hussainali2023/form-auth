@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   createUserWithEmailAndPassword,
   getAuth,
-  updateName,
   updateProfile,
 } from "firebase/auth";
 import app from "./firebase.init";
@@ -44,6 +43,44 @@ const Register = () => {
     }
     setPassword(e.target.value);
     setError("");
+  };
+
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    if ((name, email, password)) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          updateName();
+          console.log(user);
+          setError("");
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setError(errorMessage, errorCode);
+          // ..
+        });
+    } else {
+      setError("Please fill out all the input");
+      return;
+    }
+  };
+
+  const updateName = () => {
+    updateProfile(auth.currentUser, {
+      displayName: name,
+    })
+      .then(() => {
+        // Profile updated!
+        // ...
+      })
+      .catch((error) => {
+        // An error occurred
+        // ...
+      });
   };
 
   return (
@@ -104,6 +141,7 @@ const Register = () => {
           </div>
           <div className="">
             <button
+              onClick={handleSignUp}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
             >
