@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { getAuth } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  updateName,
+  updateProfile,
+} from "firebase/auth";
 import app from "./firebase.init";
 
 const Register = () => {
@@ -120,7 +125,7 @@ const Register = () => {
           </div>
         </form>
         <p className="text-center text-gray-500 text-xs">
-          &copy;2020 Acme Corp. All rights reserved.
+          &copy;2022 Register. All rights reserved.
         </p>
       </div>
     </div>
